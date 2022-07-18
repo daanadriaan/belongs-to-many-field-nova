@@ -23,6 +23,7 @@ class BelongsToManyField extends Field
     public $messageSelectAll = 'Select All';
     public $height = '350px';
     public $viewable = true;
+    public $creatable = false;
     public $showAsList = false;
     public $pivotData = [];
     /**
@@ -84,6 +85,10 @@ class BelongsToManyField extends Field
         $this->localize();
     }
 
+    public function clearCacheAfterCreating(string $cacheKey): self {
+        return $this->withMeta(['cache_key' => $cacheKey]);
+    }
+
     public function optionsLabel(string $optionsLabel)
     {
         $this->label = $optionsLabel;
@@ -109,6 +114,23 @@ class BelongsToManyField extends Field
         $this->relationModel = $model;
 
         return $this;
+    }
+
+    /**
+     * @param array $fields
+     *
+     * @return self
+     */
+    public function fields(array $fields = ['name']): self {
+        return $this->withMeta(['fields' => $fields]);
+    }
+
+    public function model($model = null): self {
+        return $this->withMeta(['model' => $model]);
+    }
+
+    public function creatable($creatable = true): self {
+        return $this->withMeta(['creatable' => $creatable]);
     }
 
     public function isAction($isAction = true)
